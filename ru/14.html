@@ -1,0 +1,16 @@
+<section class="slide">
+    <div class="">
+        <h1>vue-cli</h1>
+        <div class="next">
+<pre><code style="line-height: 1.5;">// vue.config.js
+module.exports = {
+    chainWebpack: config => {
+        // отключаем eval sourcemap
+        <mark>config.devtool('cheap-module-source-map');</mark>
+
+    }
+};
+</code></pre>
+        </div>
+    </div>
+</section>

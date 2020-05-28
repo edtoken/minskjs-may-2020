@@ -1,0 +1,36 @@
+{
+  "name": "csp-in-dev-run",
+  "description": "csp in dev run",
+  "version": "2.7.0",
+  "author": {
+    "name": "Eduard.titov",
+    "url": "http://ed.titov.im"
+  },
+  "homepage": "http://ed.titov.im/minskjs-may-2020/",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:edtoken/minskjs-may-2020.git"
+  },
+  "scripts": {
+    "develop": "run-p -r watch:html shower:serve",
+    "build": "run-s build:html shower:prepare",
+    "serve": "run-s shower:serve",
+    "watch:html": "node watch.js",
+    "build:html": "node build.js",
+    "shower:serve": "shower serve",
+    "shower:archive": "shower archive",
+    "shower:prepare": "shower prepare",
+    "shower:publish": "shower publish",
+    "shower:pdf": "shower pdf"
+  },
+  "dependencies": {
+    "@shower/core": "^2.1.2",
+    "@shower/ribbon": "^3.2.3",
+    "yaml": "^1.10.0"
+  },
+  "devDependencies": {
+    "@shower/cli": "^0.2.9",
+    "chokidar": "^3.3.1",
+    "npm-run-all": "^4.1.5"
+  }
+}

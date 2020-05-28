@@ -1,0 +1,89 @@
+headers:
+  - pattern: '.*'
+    headers:
+      - key: 'Content-Security-Policy'
+        value: >-
+          default-src 'none';
+          script-src 'self';
+          img-src 'self';
+          manifest-src 'self';
+          base-uri 'none';
+          object-src 'none';
+          style-src-elem 'self';
+          font-src 'none';
+          connect-src 'none';
+          frame-src 'none';
+          child-src 'none';
+          form-action 'none';
+          worker-src 'none';
+          media-src 'none';
+          frame-ancestors 'none';
+          block-all-mixed-content;
+      - key: 'Strict-Transport-Security'
+        value: "max-age=31556926; includeSubDomains; preload"
+      - key: 'X-XSS-Protection'
+        value: "1;mode=block;"
+      - key: 'X-Content-Type-Options'
+        value: "nosniff"
+      - key: 'Refferrer-Policy'
+        value: "strict-origin"
+      - key: 'Feature-Policy'
+        value: >-
+          autoplay 'none';
+          accelerometer 'none';
+          ambient-light-sensor 'none';
+          camera 'none';
+          encrypted-media 'none';
+          fullscreen 'none';
+          gyroscope 'none';
+          magnetometer 'none';
+          geolocation 'none';
+          microphone 'none';
+          midi 'none';
+          payment 'none';
+          picture-in-picture 'none';
+          sync-xhr 'none';
+          usb 'none';
+          encrypted-media 'none';
+          speaker 'none';
+          vr 'none';
+  - pattern: '(\/|\.html)$'
+    headers:
+      - key: 'Content-Security-Policy'
+        value: >-
+          default-src 'none';
+          script-src 'self';
+          img-src 'self';
+          manifest-src 'self';
+          base-uri 'none';
+          object-src 'none';
+          style-src-elem 'self';
+          font-src 'none';
+          frame-src 'none';
+          child-src 'none';
+          form-action 'none';
+          worker-src 'none';
+          media-src 'none';
+          frame-ancestors 'none';
+          block-all-mixed-content;
+          connect-src APP_API_URL;
+  - pattern: '^\/page-1\.html$'
+    headers:
+      - key: 'Content-Security-Policy'
+        value: >-
+          default-src 'none';
+          script-src 'self';
+          img-src 'self';
+          manifest-src 'self';
+          base-uri 'none';
+          object-src 'none';
+          style-src-elem 'self';
+          font-src 'none';
+          frame-src 'none';
+          child-src 'none';
+          form-action 'none';
+          worker-src 'none';
+          media-src 'none';
+          frame-ancestors 'none';
+          block-all-mixed-content;
+          connect-src APP_API_URL;
